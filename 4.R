@@ -1,12 +1,16 @@
 create_plot_4 <- function() {
       sources <- sources[, 1:4]
       
-      information <- merge(information, sources, by.x = "SCC", by.y = "SCC")
-      information <- transform(information, 
+      sources <- transform(sources, 
                                EI.Sector = as.character(EI.Sector))
       
+      goods <- filter(sources, grepl("coal", EI.Sector, ignore.case = TRUE) == TRUE)
+      
       information <- filter(information, 
-                            grepl("coal", EI.Sector, ignore.case = TRUE) == TRUE)
+                            SCC %in% goods$SCC)
+      
+      information <- merge(information, sources, by.x = "SCC", by.y = "SCC")
+      
       information <- group_by(information, year)
       values <- summarise(information, value = sum(Emissions))
       
