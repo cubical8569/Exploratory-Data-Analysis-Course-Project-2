@@ -1,4 +1,9 @@
 create_plot_6 <- function() {
+      library(dplyr)
+      library(ggplot2)
+      information <- readRDS("summarySCC_PM25.rds")
+      sources <- readRDS("Source_Classification_Code.rds")
+      
       information <- filter(information, fips == "24510" | fips == "06037")
       sources <- sources[, 1:4]
       
@@ -18,4 +23,6 @@ create_plot_6 <- function() {
       g <- ggplot(values, aes(year, value))
       g + geom_point() + geom_line(aes(color = city)) + 
             labs(y = "Total PM2.5 emissions from vehicles")
+      
+      ggsave(file = "plot6.png")
 }
